@@ -1,0 +1,3 @@
+[submodule "EpicManifestParser"]
+	path = EpicManifestParser
+	url = https://github.com/FModel/EpicManifestParser
