@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EpicManifestParser\EpicManifestParser.csproj" />
+    <ProjectReference Include="..\EpicManifestParser\src\EpicManifestParser\EpicManifestParser.csproj" />
   </ItemGroup>
 
 </Project>
