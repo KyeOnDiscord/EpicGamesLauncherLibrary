@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using static EpicGamesLauncherLibrary.Modals;
 
 namespace EpicGamesLauncherLibrary;
 
@@ -21,7 +20,7 @@ public static class LauncherInstalledDat
         }
         return JsonSerializer.Deserialize<EpicGamesLauncherData>(LaunchPathContents).InstallationList;
     }
-    public static InstalledApp GetApp(string AppName)
+    public static InstalledApp GetInstalledApp(string AppName)
     {
         var InstalledApps = GetInstalledApps();
         bool IsAppInstalled = InstalledApps.Any(x => x.AppName == AppName);
@@ -30,5 +29,20 @@ public static class LauncherInstalledDat
             throw new Exception($"\"{AppName}\" is not installed by Epic Games Launcher");
         else
             return InstalledApps.First(x => x.AppName == AppName);
+    }
+
+    public class InstalledApp
+    {
+        public string? InstallLocation { get; set; }
+        public string? NamespaceId { get; set; }
+        public string? ItemId { get; set; }
+        public string? ArtifactId { get; set; }
+        public string? AppVersion { get; set; }
+        public string? AppName { get; set; }
+    }
+
+    public class EpicGamesLauncherData
+    {
+        public List<InstalledApp>? InstallationList { get; set; }
     }
 }

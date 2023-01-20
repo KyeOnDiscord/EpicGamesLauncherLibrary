@@ -1,16 +1,15 @@
 ﻿using EpicGamesLauncherLibrary;
 
-//var installed = EpicGamesLauncher.GetInstalledApps();
+//Get all the installed apps on Epic Games Launcher
+var apps = EpicGamesLauncher.GetInstalledApps();
 
+
+//Get a specific app on Epic Games Launcher by its name
 EpicGamesLauncher fortnite = new EpicGamesLauncher("Fortnite");
-//int i = 0;
 
+//Get an app's installation location
+var InstallPath = fortnite.LocalInstallInfo.InstallLocation;
 
-string paksfolder = fortnite.Info.InstallLocation + "\\FortniteGame\\Content\\Paks";
-string[] paks = Directory.GetFiles(paksfolder);
-foreach (string file in paks)
-{
-    if (file.Contains("ProSwapper"))
-        File.Move(file, file.Replace("ProSwapper", "WindowsClient"));
-}
-int i = 0;
+//Get an app's version
+var Version = fortnite.LocalInstallInfo.AppVersion;
+return;

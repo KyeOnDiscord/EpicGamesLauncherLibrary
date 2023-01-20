@@ -1,6 +1,4 @@
 ﻿using EpicManifestParser.Objects;
-using System.Text.Json;
-using static EpicGamesLauncherLibrary.Modals;
 
 namespace EpicGamesLauncherLibrary;
 
@@ -9,45 +7,35 @@ public class EpicGamesLauncher
     public static readonly string EpicGamesPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Epic");
 
     public string AppName { get; private set; }
-    private InstalledApp app { get; set; }
+    public LauncherInstalledDat.InstalledApp LocalInstallInfo { get; set; }
+    public InstalledManifest.ManifestObject LocalManifest { get; set; }
 
     public EpicGamesLauncher(string AppName)
     {
         this.AppName = AppName;
-        this.app = LauncherInstalledDat.GetApp(AppName);
-        this.InstalledManifest = GetManifest(AppName);
+        this.LocalInstallInfo = LauncherInstalledDat.GetInstalledApp(AppName);
+        this.LocalManifest = InstalledManifest.GetManifest(AppName);
     }
 
-    public InstalledApp Info => this.app;
-    public ManifestObject InstalledManifest;
-
-    private readonly static string ManifestFolder = Path.Combine(EpicGamesPath, "EpicGamesLauncher", "Data", "Manifests");
-
-    public static IReadOnlyList<ManifestObject> GetInstalledManifests()
+    public EpicGamesLauncher(LauncherInstalledDat.InstalledApp LocalInstallInfo, InstalledManifest.ManifestObject LocalManifest)
     {
-        List<ManifestObject> manifests = new();
-        string[] manifestjson = Directory.GetFiles(ManifestFolder, "*.item", SearchOption.TopDirectoryOnly);
-        foreach (var manifestFile in manifestjson)
+        this.AppName = LocalInstallInfo.AppName;
+        this.LocalInstallInfo = LocalInstallInfo;
+        this.LocalManifest = LocalManifest;
+    }
+
+    public static IReadOnlyCollection<EpicGamesLauncher> GetInstalledApps()
+    {
+        List<EpicGamesLauncher> result = new();
+        var installed = LauncherInstalledDat.GetInstalledApps();
+        var manifests = InstalledManifest.GetInstalledManifests();
+        foreach (var installedApp in installed)
         {
-            string FileContent = File.ReadAllText(manifestFile);
-            var manifest = JsonSerializer.Deserialize<ManifestObject>(FileContent);
-            if (manifest is not null)
-                manifests.Add(manifest);
+            if (manifests.Any(x => x.AppName == installedApp.AppName))
+                result.Add(new EpicGamesLauncher(installedApp, manifests.First(x => x.AppName == installedApp.AppName)));
         }
-        return manifests;
+        return result;
     }
-
-    public static ManifestObject GetManifest(string AppName)
-    {
-        var manifests = GetInstalledManifests();
-        bool IsAppInstalled = manifests.Any(x => x.AppName == AppName);
-        if (!IsAppInstalled)
-            throw new Exception($"\"{AppName}\" is not installed by Epic Games Launcher");
-        else
-            return manifests.First(x => x.AppName == AppName);
-    }
-
-
 
     public class Manifests
     {
