@@ -1,13 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>Epic Games Launcher Library</Title>
+		<Company>KyeOnDiscord</Company>
+		<PackageProjectUrl>https://github.com/KyeOnDiscord/EpicGamesLauncherLibrary</PackageProjectUrl>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EpicManifestParser\src\EpicManifestParser\EpicManifestParser.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\EpicManifestParser\src\EpicManifestParser\EpicManifestParser.csproj" />
+	</ItemGroup>
 
 </Project>

@@ -7,11 +7,8 @@ public static class LauncherInstalledDat
     private static readonly string InstalledPath = Path.Combine(EpicGamesLauncher.EpicGamesPath, "UnrealEngineLauncher", "LauncherInstalled.dat");
     public static IReadOnlyList<InstalledApp> GetInstalledApps()
     {
-
         if (!File.Exists(InstalledPath))
-        {
             throw new FileNotFoundException($"{InstalledPath} not found. Please install Epic Games Launcher");
-        }
 
         string LaunchPathContents = File.ReadAllText(InstalledPath);
         if (string.IsNullOrEmpty(LaunchPathContents))
@@ -23,12 +20,12 @@ public static class LauncherInstalledDat
     public static InstalledApp GetInstalledApp(string AppName)
     {
         var InstalledApps = GetInstalledApps();
-        bool IsAppInstalled = InstalledApps.Any(x => x.AppName == AppName);
+        bool IsAppInstalled = InstalledApps.Any(x => x.AppName.ToLower() == AppName.ToLower());
 
-        if (!IsAppInstalled)
-            throw new Exception($"\"{AppName}\" is not installed by Epic Games Launcher");
+        if (IsAppInstalled)
+            return InstalledApps.First(x => x.AppName.ToLower() == AppName.ToLower());
         else
-            return InstalledApps.First(x => x.AppName == AppName);
+            throw new Exception($"\"{AppName}\" is not installed by Epic Games Launcher");
     }
 
     public class InstalledApp

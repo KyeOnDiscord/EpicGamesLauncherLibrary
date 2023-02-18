@@ -23,11 +23,11 @@ public static class InstalledManifest
     public static ManifestObject GetManifest(string AppName)
     {
         var manifests = GetInstalledManifests();
-        bool IsAppInstalled = manifests.Any(x => x.AppName == AppName);
-        if (!IsAppInstalled)
-            throw new Exception($"\"{AppName}\" is not installed by Epic Games Launcher");
+        bool IsAppInstalled = manifests.Any(x => x.AppName.ToLower() == AppName.ToLower());
+        if (IsAppInstalled)
+            return manifests.First(x => x.AppName.ToLower() == AppName.ToLower());
         else
-            return manifests.First(x => x.AppName == AppName);
+            throw new Exception($"\"{AppName}\" is not installed by Epic Games Launcher");
     }
 
     public class ManifestObject
